@@ -8,57 +8,140 @@
 </head>
 <body>
     <!-- Splash Screen -->
-    <div id="splashScreen" class="screen">
+    <div id="splashScreen">
         <img src="assets/onemanmedia_logo.png" alt="OneManMedia Logo" id="studioLogo">
+        <h1>OneManMedia Presents</h1>
     </div>
 
     <!-- Main Menu -->
-    <div id="mainMenu" class="screen hidden">
-        <img src="assets/eternal_fall_resized.jpg" id="menuBackground">
-        <div id="menuOptions">
-            <h1>Eternal Fall</h1>
+    <div id="mainMenu" style="display: none;">
+        <img src="assets/main_menu_bg.jpg" id="mainMenuBackground">
+        <div id="menuButtons">
             <button id="newGameBtn">New Game</button>
             <button id="loadGameBtn">Load Game</button>
             <button id="optionsBtn">Options</button>
-            <button id="exitBtn">Exit Game</button>
+            <button id="mapEditorBtn">Map Editor</button>
+            <button id="exitGameBtn">Exit Game</button>
         </div>
     </div>
 
     <!-- Character Creation Screen -->
-    <div id="characterCreation" class="screen hidden">
-        <h2>Character Creation</h2>
-        <input type="text" id="characterName" placeholder="Enter Character Name">
-        <button id="createCharacterBtn">Create Character</button>
-        <button id="backToMenuFromCreate">Back</button>
+    <div id="characterCreation" style="display: none;">
+        <h2>Create Your Character</h2>
+
+        <!-- Gender Selection (Radio Buttons) -->
+        <div id="gender-selection">
+            <label>
+                <input type="radio" name="gender" value="Male" checked>
+                Male
+            </label>
+            <label>
+                <input type="radio" name="gender" value="Female">
+                Female
+            </label>
+        </div>
+
+        <div id="sprite-preview">
+            <img id="sprite" src="default_sprite.png" alt="Character Sprite">
+            <div id="arrows">
+                <div id="hair-arrows" class="arrows">
+                    <span id="hair-left" class="arrow">←</span>
+                    <span id="hair-right" class="arrow">→</span>
+                </div>
+                <div id="shirt-arrows" class="arrows">
+                    <span id="shirt-left" class="arrow">←</span>
+                    <span id="shirt-right" class="arrow">→</span>
+                </div>
+                <div id="trousers-arrows" class="arrows">
+                    <span id="trousers-left" class="arrow">←</span>
+                    <span id="trousers-right" class="arrow">→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Name Input -->
+        <div id="character-name">
+            <label for="name">Character Name:</label>
+            <input type="text" id="name" placeholder="Enter character name">
+        </div>
+
+        <div id="controls">
+            <p>Use Left/Right arrows to change feature. Use Up/Down arrows to select options.</p>
+            <p id="current-feature">Current Feature: Gender</p>
+        </div>
+
+        <div id="feature-info">
+            <p id="gender-info">Gender: Male</p>
+            <p id="hair-info">Hair Style: Short, Hair Color: #000000</p>
+            <p id="shirt-info">Shirt Style: T-shirt, Shirt Color: #ffffff</p>
+            <p id="trousers-info">Trousers Style: Jeans, Trousers Color: #000000</p>
+            <p id="name-info">Name: Enter Name</p>
+        </div>
+
+        <button id="create-character">Create Character</button>
     </div>
 
     <!-- Load Game Screen -->
-    <div id="loadGame" class="screen hidden">
+    <div id="loadGameScreen" style="display: none;">
         <h2>Load Game</h2>
         <div id="saveSlots">
-            <button class="loadSlot" data-slot="1">Save Slot 1</button>
-            <button class="loadSlot" data-slot="2">Save Slot 2</button>
-            <button class="loadSlot" data-slot="3">Save Slot 3</button>
+            <button class="slot" data-slot="1">Save Slot 1</button>
+            <button class="slot" data-slot="2">Save Slot 2</button>
+            <button class="slot" data-slot="3">Save Slot 3</button>
         </div>
-        <button id="backToMenuFromLoad">Back</button>
+        <button id="backFromLoad">Back</button>
     </div>
 
     <!-- Options Screen -->
-    <div id="optionsScreen" class="screen hidden">
+    <div id="optionsScreen" style="display: none;">
         <h2>Options</h2>
         <label>Game Volume: <input type="range" id="gameVolume" min="0" max="100" value="50"></label>
         <label>Music Volume: <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
-        <button id="backToMenuFromOptions">Back</button>
+        <button id="backFromOptions">Back</button>
     </div>
 
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas" width="800" height="600" class="hidden"></canvas>
+    <!-- Canvas for Game -->
+    <canvas id="gameCanvas" width="800" height="600" style="display: none;"></canvas>
 
     <!-- Virtual Joystick -->
-    <div id="joystick" class="hidden">
-        <div id="joystickHandle"></div>
+    <div id="joystick" class="joystick" style="display: none;">
+        <div id="joystickHandle" class="handle"></div>
     </div>
 
-    <script src="game.js"></script>
+    <!-- Map Editor -->
+    <div id="mapEditorPanel" style="display: none;">
+        <div id="tilePalette"></div>
+        <div id="mapProperties">
+            <h3>Map Properties</h3>
+            <label>Zone:
+                <select id="zoneType">
+                    <option value="safe">Safe</option>
+                    <option value="dungeon">Dungeon</option>
+                    <option value="shop">Shop</option>
+                    <option value="playerHouse">Player House</option>
+                    <option value="bank">Bank</option>
+                </select>
+            </label>
+            <label>Weather:
+                <select id="weatherType">
+                    <option value="clear">Clear</option>
+                    <option value="rain">Rain</option>
+                    <option value="snow">Snow</option>
+                </select>
+            </label>
+            <label>Map Music:
+                <input type="text" id="mapMusic" placeholder="Enter music file path">
+            </label>
+            <label>Map Size:
+                <input type="number" id="mapWidth" placeholder="Width" min="10">
+                <input type="number" id="mapHeight" placeholder="Height" min="10">
+            </label>
+            <button id="saveMapBtn">Save Map</button>
+            <button id="exitMapEditor">Exit Editor</button>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/characterCreation.js"></script> <!-- Make sure this is added to handle character creation -->
 </body>
 </html>
