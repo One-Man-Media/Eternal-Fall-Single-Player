@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternal Fall</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="screen">
+        <img src="assets/onemanmedia_logo.png" alt="OneManMedia Logo" id="studioLogo">
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="screen hidden">
+        <img src="assets/eternal_fall_resized.jpg" id="menuBackground">
+        <div id="menuOptions">
+            <h1>Eternal Fall</h1>
+            <button id="newGameBtn">New Game</button>
+            <button id="loadGameBtn">Load Game</button>
+            <button id="optionsBtn">Options</button>
+            <button id="exitBtn">Exit Game</button>
+        </div>
+    </div>
+
+    <!-- Character Creation Screen -->
+    <div id="characterCreation" class="screen hidden">
+        <h2>Character Creation</h2>
+        <input type="text" id="characterName" placeholder="Enter Character Name">
+        <button id="createCharacterBtn">Create Character</button>
+        <button id="backToMenuFromCreate">Back</button>
+    </div>
+
+    <!-- Load Game Screen -->
+    <div id="loadGame" class="screen hidden">
+        <h2>Load Game</h2>
+        <div id="saveSlots">
+            <button class="loadSlot" data-slot="1">Save Slot 1</button>
+            <button class="loadSlot" data-slot="2">Save Slot 2</button>
+            <button class="loadSlot" data-slot="3">Save Slot 3</button>
+        </div>
+        <button id="backToMenuFromLoad">Back</button>
+    </div>
+
+    <!-- Options Screen -->
+    <div id="optionsScreen" class="screen hidden">
+        <h2>Options</h2>
+        <label>Game Volume: <input type="range" id="gameVolume" min="0" max="100" value="50"></label>
+        <label>Music Volume: <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
+        <button id="backToMenuFromOptions">Back</button>
+    </div>
+
+    <!-- Game Canvas -->
+    <canvas id="gameCanvas" width="800" height="600" class="hidden"></canvas>
+
+    <!-- Virtual Joystick -->
+    <div id="joystick" class="hidden">
+        <div id="joystickHandle"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
