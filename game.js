@@ -1,128 +1,175 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const splashScreen = document.getElementById("splashScreen");
-    const mainMenu = document.getElementById("mainMenu");
-    const characterCreation = document.getElementById("characterCreation");
-    const loadGameScreen = document.getElementById("loadGame");
-    const optionsScreen = document.getElementById("optionsScreen");
-    const gameCanvas = document.getElementById("gameCanvas");
-    const ctx = gameCanvas.getContext("2d");
-    const joystick = document.getElementById("joystick");
-    const joystickHandle = document.getElementById("joystickHandle");
-
-    let player = { x: 400, y: 300, speed: 3, size: 30 };
-    let keys = { up: false, down: false, left: false, right: false };
-
-    // Splash screen transition
+// ======================================
+// SPLASH SCREEN AND MAIN MENU FUNCTIONS
+// ======================================
+window.onload = function() {
     setTimeout(() => {
-        splashScreen.classList.add("hidden");
-        mainMenu.classList.remove("hidden");
-    }, 3000);
+        document.getElementById("splashScreen").style.display = "none";
+        document.getElementById("mainMenu").style.display = "block";
+    }, 3000); // 3 seconds splash screen
+};
 
-    // Menu navigation
-    document.getElementById("newGameBtn").addEventListener("click", () => {
-        mainMenu.classList.add("hidden");
-        characterCreation.classList.remove("hidden");
-    });
+// ===================
+// GAME FUNCTIONALITY
+// ===================
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+let player = { x: 400, y: 300, speed: 3 };
 
-    document.getElementById("loadGameBtn").addEventListener("click", () => {
-        mainMenu.classList.add("hidden");
-        loadGameScreen.classList.remove("hidden");
-    });
-
-    document.getElementById("optionsBtn").addEventListener("click", () => {
-        mainMenu.classList.add("hidden");
-        optionsScreen.classList.remove("hidden");
-    });
-
-    document.getElementById("exitBtn").addEventListener("click", () => {
-        window.close(); // May not work in all browsers
-    });
-
-    // Back buttons
-    document.getElementById("backToMenuFromCreate").addEventListener("click", () => {
-        characterCreation.classList.add("hidden");
-        mainMenu.classList.remove("hidden");
-    });
-
-    document.getElementById("backToMenuFromLoad").addEventListener("click", () => {
-        loadGameScreen.classList.add("hidden");
-        mainMenu.classList.remove("hidden");
-    });
-
-    document.getElementById("backToMenuFromOptions").addEventListener("click", () => {
-        optionsScreen.classList.add("hidden");
-        mainMenu.classList.remove("hidden");
-    });
-
-    // Start Game from Character Creation
-    document.getElementById("createCharacterBtn").addEventListener("click", () => {
-        characterCreation.classList.add("hidden");
-        startGame();
-    });
-
-    function startGame() {
-        gameCanvas.classList.remove("hidden");
-        joystick.classList.remove("hidden");
-        requestAnimationFrame(gameLoop);
+// Player movement
+document.addEventListener("keydown", (e) => {
+    if (canvas.style.display === "block") {
+        if (e.key === "ArrowUp" || e.key === "w") player.y -= player.speed;
+        if (e.key === "ArrowDown" || e.key === "s") player.y += player.speed;
+        if (e.key === "ArrowLeft" || e.key === "a") player.x -= player.speed;
+        if (e.key === "ArrowRight" || e.key === "d") player.x += player.speed;
+        renderGame();
     }
+});
 
-    // Key movement support (WASD & Arrow keys)
-    window.addEventListener("keydown", (e) => {
-        if (["ArrowUp", "w", "W"].includes(e.key)) keys.up = true;
-        if (["ArrowDown", "s", "S"].includes(e.key)) keys.down = true;
-        if (["ArrowLeft", "a", "A"].includes(e.key)) keys.left = true;
-        if (["ArrowRight", "d", "D"].includes(e.key)) keys.right = true;
-    });
+function renderGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(player.x, player.y, 30, 30); // Placeholder player
+}
 
-    window.addEventListener("keyup", (e) => {
-        if (["ArrowUp", "w", "W"].includes(e.key)) keys.up = false;
-        if (["ArrowDown", "s", "S"].includes(e.key)) keys.down = false;
-        if (["ArrowLeft", "a", "A"].includes(e.key)) keys.left = false;
-        if (["ArrowRight", "d", "D"].includes(e.key)) keys.right = false;
-    });
+// ===================
+// MAIN MENU HANDLING
+// ===================
+document.getElementById("newGameBtn").onclick = () => {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("characterCreation").style.display = "block";
+};
 
-    // Game loop
-    function gameLoop() {
-        update();
-        render();
-        requestAnimationFrame(gameLoop);
-    }
+// ===================
+// CHARACTER CREATION
+// ===================
 
-    function update() {
-        if (keys.up) player.y -= player.speed;
-        if (keys.down) player.y += player.speed;
-        if (keys.left) player.x -= player.speed;
-        if (keys.right) player.x += player.speed;
-    }
+// Character data
+let characterData = {
+    gender: "male",
+    hair: 0,
+    shirt: 0,
+    trousers: 0,
+    name: ""
+};
 
-    function render() {
-        ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-        ctx.fillStyle = "blue";
-        ctx.fillRect(player.x, player.y, player.size, player.size);
-    }
+// Arrays for customization options (assuming sprites follow these indexes)
+const hairOptions = ["hair1.png", "hair2.png", "hair3.png"];
+const shirtOptions = ["shirt1.png", "shirt2.png", "shirt3.png"];
+const trousersOptions = ["trousers1.png", "trousers2.png", "trousers3.png"];
 
-    // Virtual Joystick functionality
-    let dragging = false;
-    joystickHandle.addEventListener("touchstart", () => (dragging = true));
-    window.addEventListener("touchend", () => {
-        dragging = false;
-        keys = { up: false, down: false, left: false, right: false };
-        joystickHandle.style.left = "35px";
-        joystickHandle.style.top = "35px";
-    });
+// Update character preview based on selections
+function updateCharacterPreview() {
+    const spritePreview = document.getElementById("sprite");
+    spritePreview.src = `assets/sprites/${characterData.gender}_${hairOptions[characterData.hair]}_${shirtOptions[characterData.shirt]}_${trousersOptions[characterData.trousers]}`;
+}
 
-    window.addEventListener("touchmove", (e) => {
-        if (!dragging) return;
-        const rect = joystick.getBoundingClientRect();
-        const touch = e.touches[0];
-        const dx = touch.clientX - (rect.left + rect.width / 2);
-        const dy = touch.clientY - (rect.top + rect.height / 2);
-        keys.up = dy < -10;
-        keys.down = dy > 10;
-        keys.left = dx < -10;
-        keys.right = dx > 10;
-
-        joystickHandle.style.left = `${35 + Math.min(Math.max(dx, -35), 35)}px`;
-        joystickHandle.style.top = `${35 + Math.min(Math.max(dy, -35), 35)}px`;
+// Gender selection
+document.getElementsByName("gender").forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+        characterData.gender = e.target.value;
+        updateCharacterPreview();
     });
 });
+
+// Arrow controls for customization
+function cycleOption(optionType, direction) {
+    const optionArray = optionType === "hair" ? hairOptions : optionType === "shirt" ? shirtOptions : trousersOptions;
+    characterData[optionType] = (characterData[optionType] + direction + optionArray.length) % optionArray.length;
+    updateCharacterPreview();
+}
+
+// Arrow button event listeners
+document.getElementById("hair-left").onclick = () => cycleOption("hair", -1);
+document.getElementById("hair-right").onclick = () => cycleOption("hair", 1);
+document.getElementById("shirt-left").onclick = () => cycleOption("shirt", -1);
+document.getElementById("shirt-right").onclick = () => cycleOption("shirt", 1);
+document.getElementById("trousers-left").onclick = () => cycleOption("trousers", -1);
+document.getElementById("trousers-right").onclick = () => cycleOption("trousers", 1);
+
+// Start Game with Validation
+document.getElementById("startGameBtn").onclick = () => {
+    const nameInput = document.getElementById("characterName").value.trim();
+    if (!nameInput) {
+        alert("Please enter a character name.");
+        return;
+    }
+    characterData.name = nameInput;
+
+    if (!characterData.gender) {
+        alert("Please select a gender.");
+        return;
+    }
+
+    document.getElementById("characterCreation").style.display = "none";
+    canvas.style.display = "block";
+    renderGame();
+};
+
+// ===================
+// LOAD GAME HANDLING
+// ===================
+document.getElementById("loadGameBtn").onclick = () => {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("loadGameScreen").style.display = "block";
+};
+
+document.getElementById("backFromLoad").onclick = () => {
+    document.getElementById("loadGameScreen").style.display = "none";
+    document.getElementById("mainMenu").style.display = "block";
+};
+
+// ===================
+// OPTIONS HANDLING
+// ===================
+document.getElementById("optionsBtn").onclick = () => {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("optionsScreen").style.display = "block";
+};
+
+document.getElementById("backFromOptions").onclick = () => {
+    document.getElementById("optionsScreen").style.display = "none";
+    document.getElementById("mainMenu").style.display = "block";
+};
+
+document.getElementById("exitGameBtn").onclick = () => window.close();
+
+// ===================
+// MAP EDITOR SECTION
+// ===================
+let mapData = [];
+function initMap(width, height) {
+    mapData = Array.from({ length: height }, () => Array(width).fill(0));
+}
+
+function renderMap() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let y = 0; y < mapData.length; y++) {
+        for (let x = 0; x < mapData[y].length; x++) {
+            ctx.fillStyle = mapData[y][x] === 1 ? "gray" : "green";
+            ctx.fillRect(x * 50, y * 50, 50, 50);
+        }
+    }
+}
+
+canvas.addEventListener("click", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / 50);
+    const y = Math.floor((e.clientY - rect.top) / 50);
+    mapData[y][x] = 1;
+    renderMap();
+});
+
+document.getElementById("mapEditorBtn").onclick = () => {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("mapEditorPanel").style.display = "block";
+    canvas.style.display = "block";
+    initMap(16, 12);
+    renderMap();
+};
+
+document.getElementById("exitMapEditor").onclick = () => {
+    document.getElementById("mapEditorPanel").style.display = "none";
+    document.getElementById("mainMenu").style.display = "block";
+    canvas.style.display = "none";
+};
