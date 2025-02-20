@@ -1,0 +1,110 @@
+/* styles.css */
+
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Splash Screen */
+#splashScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
+/* Main Menu */
+#mainMenu {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+#menuBackground {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-buttons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-buttons button {
+    padding: 15px 40px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Character Creation */
+#characterCreation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.customization-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#characterCreation img {
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+/* Settings */
+#settingsScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Admin Panel */
+#adminPanel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#secretTouchArea {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    opacity: 0; /* Completely invisible */
+    z-index: 100;
+}
