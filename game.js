@@ -151,6 +151,31 @@ function toggleAdminPanel() {
 
 document.getElementById("closeAdminPanelBtn").onclick = toggleAdminPanel;
 
+// ========================
+// TOUCHSCREEN ADMIN ACCESS
+// ========================
+
+// Double-tap detection for secret button
+let lastTap = 0;
+document.getElementById("secretTouchArea").addEventListener("touchend", function () {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    if (tapLength < 500 && tapLength > 0) {
+        toggleAdminPanel(); // Open admin panel on double-tap
+    }
+    lastTap = currentTime;
+});
+
+// Long press (1.5s) also opens admin panel
+let pressTimer;
+document.getElementById("secretTouchArea").addEventListener("touchstart", function () {
+    pressTimer = setTimeout(toggleAdminPanel, 1500); // Long press opens admin panel
+});
+
+document.getElementById("secretTouchArea").addEventListener("touchend", function () {
+    clearTimeout(pressTimer);
+});
+
 // ===================
 //  ADMIN PANEL - EDITORS
 // ===================
